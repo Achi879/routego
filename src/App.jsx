@@ -1,6 +1,5 @@
 
 import './globals.css'
-
 import './App.css'
 
 function App() {
@@ -9,19 +8,21 @@ function App() {
       <header className="navbar">
         <a className="logo" href="/">RouteGo</a>
 
-        <nav>
+        <nav aria-label="მთავარი ნავიგაცია">
           <a href="#routes">მარშრუტები</a>
-          <a href="#about">ჩვენ შესახებ</a>
-        </nav>
+<a href="/about.html">ჩვენ შესახებ</a>       
+ </nav>
 
-        <button className="login-button">შესვლა</button>
+        <button className="login-button" type="button">
+          შესვლა
+        </button>
       </header>
 
       <main>
-        <section className="hero">
+        <section className="hero" aria-labelledby="hero-title">
           <p className="eyebrow">მოგზაურობა უფრო მარტივად</p>
 
-          <h1>
+          <h1 id="hero-title">
             იპოვე შენი გზა.
             <br />
             <span>იმოგზაურე მარტივად.</span>
@@ -32,7 +33,15 @@ function App() {
             და დაგეგმე შენი შემდეგი მოგზაურობა.
           </p>
 
-          <div className="search-box">
+          <form
+            className="search-box"
+            onSubmit={(event) => {
+              event.preventDefault()
+              document.getElementById('routes')?.scrollIntoView({
+                behavior: 'smooth',
+              })
+            }}
+          >
             <label>
               საიდან?
               <input type="text" placeholder="მაგ. თბილისი" />
@@ -43,26 +52,31 @@ function App() {
               <input type="text" placeholder="მაგ. ბათუმი" />
             </label>
 
-            <button onClick={() => {
-              document.getElementById('routes')?.scrollIntoView({
-                behavior: 'smooth'
-              })
-            }}>
-              მარშრუტების ნახვა
-            </button>
-          </div>
+            <button type="submit">მარშრუტების ნახვა</button>
+          </form>
         </section>
 
-        <section className="routes-section" id="routes">
+        <section
+          className="routes-section"
+          id="routes"
+          aria-labelledby="routes-title"
+        >
           <p className="eyebrow">შენთვის შერჩეული</p>
-          <h2>პოპულარული მარშრუტები</h2>
+          <h2 id="routes-title">პოპულარული მარშრუტები</h2>
 
           <div className="route-grid">
             <article className="route-card">
-              <div className="route-icon">🏙️</div>
+              <figure className="route-icon">
+                <span aria-hidden="true">🏙️</span> 
+                <figcaption>ქალაქის მიმართულება</figcaption><br />
+              </figure>
+
               <p className="route-label">პოპულარული მიმართულება</p>
               <h3>თბილისი — ბათუმი</h3>
-              <p className="route-info">დაახლოებით 6 საათი</p>
+              <p className="route-info">
+                დაახლოებით <time dateTime="PT6H">6 საათი</time>
+              </p>
+
               <div className="route-footer">
                 <span>ერთი მგზავრი</span>
                 <strong>40 ₾-დან</strong>
@@ -70,10 +84,17 @@ function App() {
             </article>
 
             <article className="route-card">
-              <div className="route-icon">⛰️</div>
+              <figure className="route-icon">
+                <span aria-hidden="true">⛰️</span>
+                <figcaption>მთის მიმართულება</figcaption>
+              </figure>
+
               <p className="route-label">მთის მიმართულება</p>
               <h3>თბილისი — გუდაური</h3>
-              <p className="route-info">დაახლოებით 2.5 საათი</p>
+              <p className="route-info">
+                დაახლოებით <time dateTime="PT2H30M">2.5 საათი</time>
+              </p>
+
               <div className="route-footer">
                 <span>ერთი მგზავრი</span>
                 <strong>25 ₾-დან</strong>
@@ -81,20 +102,39 @@ function App() {
             </article>
 
             <article className="route-card">
-              <div className="route-icon">🌿</div>
+              <figure className="route-icon">
+                <span aria-hidden="true">🌿</span>
+                <figcaption>ბუნების მიმართულება</figcaption>
+              </figure>
+
               <p className="route-label">დასავლეთ საქართველო</p>
               <h3>თბილისი — ქუთაისი</h3>
-              <p className="route-info">დაახლოებით 3.5 საათი</p>
+              <p className="route-info">
+                დაახლოებით <time dateTime="PT3H30M">3.5 საათი</time>
+              </p>
+
               <div className="route-footer">
                 <span>ერთი მგზავრი</span>
                 <strong>25 ₾-დან</strong>
               </div>
             </article>
           </div>
+
+          <aside aria-label="მოგზაურობის რჩევა">
+            <h3>მოგზაურობის რჩევა</h3>
+            <p>
+              მგზავრობის დაგეგმვამდე გადაამოწმე გამგზავრების
+              დრო და ბილეთის ფასი.
+            </p>
+          </aside>
         </section>
 
-        <section className="about-section" id="about">
-          <h2>შენი მოგზაურობა იწყება აქ</h2>
+        <section
+          className="about-section"
+          id="about"
+          aria-labelledby="about-title"
+        >
+          <h2 id="about-title">შენი მოგზაურობა იწყება აქ</h2>
           <p>
             RouteGo გეხმარება სასურველი მარშრუტის მარტივად მოძებნაში.
           </p>
@@ -102,7 +142,11 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p>© 2026 RouteGo — იმოგზაურე მარტივად.</p>
+        <p>
+          <small>
+            © <time dateTime="2026">2026</time> RouteGo — იმოგზაურე მარტივად.
+          </small>
+        </p>
       </footer>
     </div>
   )
