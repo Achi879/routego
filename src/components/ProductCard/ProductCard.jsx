@@ -1,4 +1,5 @@
-function ProductCard({ product }) {
+
+function ProductCard({ product, onEdit, onDelete }) {
   return (
     <article className="product-card">
       <div className="product-card-top">
@@ -25,13 +26,25 @@ function ProductCard({ product }) {
           <span className="product-price-label">ბილეთის ფასი</span>
           <strong>{product.price}</strong>
         </div>
+      </div>
+
+      <div className="product-card-actions">
+        <button
+          className="product-edit-button"
+          type="button"
+          onClick={() => onEdit(product)}
+          aria-label={`${product.name} მარშრუტის რედაქტირება`}
+        >
+          ✏️ რედაქტირება
+        </button>
 
         <button
-          className="product-view-button"
+          className="product-delete-button"
           type="button"
-          aria-label={`${product.name} მარშრუტის ნახვა`}
+          onClick={() => onDelete(product.id)}
+          aria-label={`${product.name} მარშრუტის წაშლა`}
         >
-          →
+          🗑️ წაშლა
         </button>
       </div>
     </article>
