@@ -90,7 +90,7 @@ const routes = [
     price: 30,
     icon: '🍃',
     category: 'გურია',
-    description: 'გურიის რეგიონი',
+    description: 'გურიის მიმართულება',
   },
   {
     id: 'tbilisi-mestia',
@@ -139,15 +139,14 @@ const routes = [
 ]
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false)
   const [fromCity, setFromCity] = useState('')
   const [toCity, setToCity] = useState('')
-
   const [debouncedFrom, setDebouncedFrom] = useState('')
   const [debouncedTo, setDebouncedTo] = useState('')
-
   const [selectedRoute, setSelectedRoute] = useState(null)
 
-  // Debounce: ძიება სრულდება აკრეფის შეწყვეტიდან 300 ms-ის შემდეგ.
+  // ძიება სრულდება აკრეფის შეწყვეტიდან 300 ms-ის შემდეგ.
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setDebouncedFrom(fromCity.trim())
@@ -235,13 +234,45 @@ function App() {
   return (
     <div className="app">
       <header className="navbar">
-        <a className="logo" href="/">
+        <a
+          className="logo"
+          href="/"
+          onClick={() => setMenuOpen(false)}
+        >
           RouteGo
         </a>
 
-        <nav aria-label="მთავარი ნავიგაცია">
-          <a href="#routes">მარშრუტები</a>
-          <a href="/about.html">ჩვენ შესახებ</a>
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-label={menuOpen ? 'მენიუს დახურვა' : 'მენიუს გახსნა'}
+          aria-expanded={menuOpen}
+          aria-controls="main-navigation"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span aria-hidden="true">
+            {menuOpen ? '✕' : '☰'}
+          </span>
+        </button>
+
+        <nav
+          id="main-navigation"
+          className={menuOpen ? 'nav-open' : ''}
+          aria-label="მთავარი ნავიგაცია"
+        >
+          <a
+            href="#routes"
+            onClick={() => setMenuOpen(false)}
+          >
+            მარშრუტები
+          </a>
+
+          <a
+            href="/about.html"
+            onClick={() => setMenuOpen(false)}
+          >
+            ჩვენ შესახებ
+          </a>
         </nav>
 
         <button className="login-button" type="button">
@@ -379,6 +410,7 @@ function App() {
               <p>
                 სცადე სხვა ქალაქის სახელი ან შეცვალე საძიებო ტექსტი.
               </p>
+
               <button
                 type="button"
                 onClick={() => {
@@ -399,15 +431,19 @@ function App() {
               aria-live="polite"
             >
               <h3 id="selected-route-title">არჩეული მარშრუტი</h3>
+
               <p>
                 {selectedRouteDetails.from} — {selectedRouteDetails.to}
               </p>
+
               <p>
                 მგზავრობის დრო: {selectedRouteDetails.duration}
               </p>
+
               <p>
                 ფასი: {selectedRouteDetails.price} ₾-დან
               </p>
+
               <p className="booking-note">
                 ეს არის დემო არჩევა. ბილეთის რეალური დაჯავშნა ჯერ
                 არ არის დაკავშირებული სისტემასთან.
