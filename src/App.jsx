@@ -1,5 +1,10 @@
 
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createPortal } from 'react-dom'
+import useFilterRoutes from './hooks/useFilterRoutes'
 import './globals.css'
 import './App.css'
 
@@ -138,45 +143,140 @@ const routes = [
   },
 ]
 
+// Zod ვალიდაციის სქემა
+const bookingSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, 'სახელი უნდა შეიცავდეს მინიმუმ 2 სიმბოლოს'),
+
+  phone: z
+    .string()
+    .regex(/^[0-9]{9}$/, 'ტელეფონის ნომერი უნდა შეიცავდეს 9 ციფრს'),
+})
+
+function RouteModal({ route, onClose }) {
+  const [submitted, setSubmitted] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(bookingSchema),
+    defaultValues: {
+      name: '',
+      phone: '',
+    },
+  })
+
+  async function onSubmit() {
+    // დემო გაგზავნა — რეალურ სერვერს არ უკავშირდება.
+    await new Promise((resolve) => setTimeout(resolve, 600))
+    setSubmitted(true)
+  }
+
+  return createPortal(
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="route-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          className="modal-close"
+          type="button"
+          onClick={onClose}
+          aria-label="ფანჯრის დახურვა"
+        >
+          ✕
+        </button>
+
+        {submitted ? (
+          <div className="modal-success">
+            <h2>მონაცემები მიღებულია!</h2>
+            <p>ეს არის RouteGo-ს დემო ფორმა.</p>
+
+            <button type="button" onClick={onClose}>
+              დახურვა
+            </button>
+          </div>
+        ) : (
+          <>
+            <h2 id="modal-title">მარშრუტის დაჯავშნა</h2>
+
+            <div className="modal-route-info">
+              <h3>
+                {route.from} — {route.to}
+              </h3>
+
+              <p>მგზავრობის დრო: {route.duration}</p>
+              <p>ფასი: {route.price} ₾-დან</p>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+              <label htmlFor="passenger-name">
+                სახელი
+
+                <input
+                  id="passenger-name"
+                  type="text"
+                  placeholder="შეიყვანე სახელი"
+                  aria-invalid={Boolean(errors.name)}
+                  {...register('name')}
+                />
+              </label>
+
+              {errors.name && (
+                <p className="form-error" role="alert">
+                  {errors.name.message}
+                </p>
+              )}
+
+              <label htmlFor="passenger-phone">
+                ტელეფონის ნომერი
+
+                <input
+                  id="passenger-phone"
+                  type="tel"
+                  placeholder="მაგ. 599123456"
+                  aria-invalid={Boolean(errors.phone)}
+                  {...register('phone')}
+                />
+              </label>
+
+              {errors.phone && (
+                <p className="form-error" role="alert">
+                  {errors.phone.message}
+                </p>
+              )}
+
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'იგზავნება...' : 'დადასტურება'}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>,
+    document.body,
+  )
+}
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [fromCity, setFromCity] = useState('')
   const [toCity, setToCity] = useState('')
-  const [debouncedFrom, setDebouncedFrom] = useState('')
-  const [debouncedTo, setDebouncedTo] = useState('')
   const [selectedRoute, setSelectedRoute] = useState(null)
 
-  // ძიება სრულდება აკრეფის შეწყვეტიდან 300 ms-ის შემდეგ.
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setDebouncedFrom(fromCity.trim())
-      setDebouncedTo(toCity.trim())
-    }, 300)
-
-    return () => clearTimeout(timeoutId)
-  }, [fromCity, toCity])
-
-  const isSearching =
-    fromCity.trim() !== debouncedFrom ||
-    toCity.trim() !== debouncedTo
-
-  // მარშრუტების ფილტრაცია.
-  const filteredRoutes = useMemo(() => {
-    const fromQuery = debouncedFrom.toLocaleLowerCase('ka')
-    const toQuery = debouncedTo.toLocaleLowerCase('ka')
-
-    return routes.filter((route) => {
-      const fromMatches = route.from
-        .toLocaleLowerCase('ka')
-        .includes(fromQuery)
-
-      const toMatches = route.to
-        .toLocaleLowerCase('ka')
-        .includes(toQuery)
-
-      return fromMatches && toMatches
-    })
-  }, [debouncedFrom, debouncedTo])
+  // Custom Hook — მარშრუტების ძიება და ფილტრაცია.
+  const { filteredRoutes, isSearching } = useFilterRoutes(
+    routes,
+    fromCity,
+    toCity,
+  )
 
   function handleSearchSubmit(event) {
     event.preventDefault()
@@ -187,7 +287,7 @@ function App() {
     })
   }
 
-  // Event Delegation: ერთი click-handler მთელი სიისთვის.
+  // Event Delegation — ერთი click-handler მთელი სიისთვის.
   function handleRouteListClick(event) {
     const card = event.target.closest('[data-route-id]')
 
@@ -298,6 +398,7 @@ function App() {
           <form className="search-box" onSubmit={handleSearchSubmit}>
             <label htmlFor="from-city">
               საიდან?
+
               <input
                 id="from-city"
                 name="from"
@@ -312,6 +413,7 @@ function App() {
 
             <label htmlFor="to-city">
               სად?
+
               <input
                 id="to-city"
                 name="to"
@@ -334,6 +436,7 @@ function App() {
           aria-labelledby="routes-title"
         >
           <p className="eyebrow">შენთვის შერჩეული</p>
+
           <h2 id="routes-title">პოპულარული მარშრუტები</h2>
 
           <p
@@ -407,6 +510,7 @@ function App() {
           {!isSearching && filteredRoutes.length === 0 && (
             <div className="no-routes" role="status">
               <h3>მარშრუტი ვერ მოიძებნა</h3>
+
               <p>
                 სცადე სხვა ქალაქის სახელი ან შეცვალე საძიებო ტექსტი.
               </p>
@@ -453,6 +557,7 @@ function App() {
 
           <aside aria-label="მოგზაურობის რჩევა">
             <h3>მოგზაურობის რჩევა</h3>
+
             <p>
               მგზავრობის დაგეგმვამდე გადაამოწმე გამგზავრების
               დრო და ბილეთის ფასი.
@@ -466,6 +571,7 @@ function App() {
           aria-labelledby="about-title"
         >
           <h2 id="about-title">შენი მოგზაურობა იწყება აქ</h2>
+
           <p>
             RouteGo გეხმარება სასურველი მარშრუტის მარტივად მოძებნაში.
           </p>
@@ -479,6 +585,13 @@ function App() {
           </small>
         </p>
       </footer>
+
+      {selectedRouteDetails && (
+        <RouteModal
+          route={selectedRouteDetails}
+          onClose={() => setSelectedRoute(null)}
+        />
+      )}
     </div>
   )
 }
