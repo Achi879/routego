@@ -1,79 +1,87 @@
+# 🚀 RouteGo — Find Your Route. Travel with Ease.
 
-# RouteGo
+**Live Demo:** ამჟამად ხელმისაწვდომია ლოკალურად.  
+**GitHub Repository:** https://github.com/Achi879/routego  
+**Category:** Travel & Route Management Platform
 
-**RouteGo** is a modern travel and route management web application built with React. The platform is designed to help users explore travel routes and manage route information through a convenient and responsive interface.
+---
 
-## Project Overview
+## 📋 About the Project
 
-RouteGo provides a user-friendly interface for browsing routes and managing travel-related information. The project includes a main application interface and an administrative dashboard.
+**RouteGo** არის React-ზე დაფუძნებული მარშრუტების ძიებისა და მართვის ვებპლატფორმა. მისი მიზანია მომხმარებლებს გაუმარტივოს საქართველოს საქალაქთაშორისო მიმართულებების მოძიება და მარშრუტების შესახებ ინფორმაციის მიღება. პლატფორმა აერთიანებს მომხმარებლის მთავარ ინტერფეისსა და ადმინისტრაციულ Dashboard-ს. პროექტი შექმნილია მარტივი გამოყენებისა და სხვადასხვა ეკრანის ზომაზე ადაპტირებული დიზაინის გათვალისწინებით.
 
-## Features
+---
 
-- Browse and search available routes.
-- Filter routes using a custom React Hook.
-- Display route information through reusable components.
-- Manage route information through the dashboard.
-- Add and edit routes using a modal form.
-- Validate form data before submission.
-- Responsive layout for desktop, tablet, and mobile devices.
-- Reusable UI components and organized project structure.
+## ✨ Key Features
 
-## Technologies Used
+- **Route Search & Filtering:** მარშრუტების ძიება გამგზავრებისა და დანიშნულების ქალაქების მიხედვით.
+- **Optimized Filtering:** Custom Hook `useFilterRoutes`, 300ms Debounce და `useMemo` ფილტრაციის ოპტიმიზაციისთვის.
+- **Route Management:** მარშრუტების ინფორმაციის მართვის Dashboard და დამატებისა და რედაქტირების მოდალური ფორმა.
+- **Form Validation:** React Hook Form და Zod მომხმარებლის მიერ შეყვანილი მონაცემების შესამოწმებლად.
+- **Portal Modals:** მოდალური ფანჯრების გამოსატანად გამოიყენება `ReactDOM.createPortal`.
+- **Error Handling:** `ErrorBoundary` React-ის კომპონენტებში წარმოქმნილი შეცდომების დასამუშავებლად.
+- **Responsive Design:** ადაპტირებული ინტერფეისი დესკტოპის, პლანშეტისა და მობილური მოწყობილობებისთვის.
+- **Reusable Components:** ხელახლა გამოყენებადი კომპონენტები და მოდულური პროექტის სტრუქტურა.
 
-### Main Technologies
-- React 19
-- JavaScript (ES Modules)
-- Vite
+---
 
-### Form Handling and Validation
-- React Hook Form
-- Zod
-- @hookform/resolvers
+## 🛠️ Tech Stack
 
-### Development Tools
-- ESLint
-- CSS3
-- HTML5
-- Git and GitHub
+| Category | Technology |
+| :--- | :--- |
+| Core | React 19 |
+| Programming Language | JavaScript (ES Modules) |
+| Build Tool | Vite |
+| Markup & Styling | HTML5, CSS3 |
+| Forms | React Hook Form |
+| Validation | Zod, @hookform/resolvers |
+| UI & Modals | ReactDOM.createPortal |
+| Performance | Custom Hooks, Debounce, useMemo |
+| Error Handling | ErrorBoundary |
+| Code Quality | ESLint |
+| Version Control | Git, GitHub |
 
-## Project Structure
+---
+
+## 📁 Project Structure
 
 ```text
 routego/
-├── public/
+├── public/                  # საჯარო რესურსები
 ├── src/
-│   ├── assets/
-│   ├── components/
-│   │   ├── Header/
-│   │   ├── Layout/
-│   │   ├── ProductCard/
-│   │   ├── RouteModal/
-│   │   ├── Sidebar/
-│   │   └── StatCard/
-│   ├── data/
+│   ├── assets/              # პროექტის რესურსები
+│   ├── components/          # ხელახლა გამოყენებადი კომპონენტები
+│   │   ├── Header/          # გვერდის ზედა ნავიგაცია
+│   │   ├── Layout/          # გვერდის განლაგება
+│   │   ├── ProductCard/     # ინფორმაციის ბარათები
+│   │   ├── RouteModal/      # მარშრუტის მოდალური ფორმა
+│   │   ├── Sidebar/         # გვერდითი მენიუ
+│   │   └── StatCard/        # სტატისტიკური ბარათები
+│   ├── data/                # პროექტის მონაცემები
 │   │   └── products.js
-│   ├── hooks/
+│   ├── hooks/               # Custom React Hooks
 │   │   └── useFilterRoutes.js
-│   ├── App.jsx
-│   ├── App.css
-│   ├── DashboardApp.jsx
-│   ├── DashboardApp.css
-│   ├── ErrorBoundary.jsx
-│   ├── globals.css
-│   ├── index.css
-│   ├── main.jsx
-│   └── dashboard-main.jsx
+│   ├── App.jsx              # მთავარი აპლიკაცია
+│   ├── App.css              # მთავარი სტილები
+│   ├── DashboardApp.jsx     # ადმინისტრაციული ინტერფეისი
+│   ├── DashboardApp.css    # Dashboard-ის სტილები
+│   ├── ErrorBoundary.jsx   # შეცდომების დამუშავება
+│   ├── globals.css         # გლობალური დიზაინის სტილები
+│   ├── index.css            # საწყისი სტილები
+│   ├── main.jsx             # აპლიკაციის საწყისი წერტილი
+│   └── dashboard-main.jsx  # Dashboard-ის საწყისი წერტილი
 ├── .gitignore
 ├── index.html
 ├── package.json
 └── README.md
 ```
 
-## Installation and Setup
+---
 
-### Prerequisites
+## ⚙️ Getting Started
 
-Make sure you have installed:
+პროექტის ლოკალურად გასაშვებად საჭიროა:
+
 - Node.js
 - npm
 - Git
@@ -84,7 +92,7 @@ Make sure you have installed:
 git clone https://github.com/Achi879/routego.git
 ```
 
-### 2. Navigate to the project directory
+### 2. Navigate to the project folder
 
 ```bash
 cd routego
@@ -102,39 +110,46 @@ npm install
 npm run dev
 ```
 
-Vite will provide a local URL where you can open the application in your browser.
+გაშვების შემდეგ Vite ტერმინალში გამოიტანს ლოკალურ მისამართს. გახსენით მითითებული URL ბრაუზერში.
 
-## Available Scripts
+---
+
+## 🔐 Test Accounts
+
+პროექტის მიმდინარე ვერსიაში მომხმარებლის ავტორიზაციისა და როლების სისტემა წარმოდგენილი არ არის.
+
+შესაბამისად, სატესტო ანგარიშები საჭირო არ არის.
+
+---
+
+## 📜 Available Scripts
 
 | Command | Description |
-|---|---|
-| `npm run dev` | Starts the development server |
-| `npm run build` | Creates a production build |
-| `npm run lint` | Runs ESLint code analysis |
-| `npm run preview` | Previews the production build |
+| :--- | :--- |
+| `npm run dev` | დეველოპერული სერვერის გაშვება |
+| `npm run build` | Production ვერსიის აწყობა |
+| `npm run preview` | Production ვერსიის ლოკალურად ნახვა |
+| `npm run lint` | ESLint კოდის შემოწმება |
 
-## Code Quality and Testing
+---
 
-The project uses ESLint to identify code quality issues and maintain consistent development practices.
+## 🧪 Code Quality & Testing
 
-The following checks have been performed:
+პროექტის ხარისხის შესამოწმებლად გამოყენებულია ESLint და Vite-ის Production Build.
 
-- ESLint validation.
-- Production build verification.
-- Cross-browser visual testing in Google Chrome and Microsoft Edge.
-- Responsive layout testing on mobile and tablet screen sizes.
+ჩატარებულია შემდეგი შემოწმებები:
 
-## Responsive Design
+- ESLint კოდის ანალიზი.
+- Production Build-ის წარმატებით შექმნის შემოწმება.
+- ვიზუალური ტესტირება Google Chrome-სა და Microsoft Edge-ში.
+- Responsive დიზაინის შემოწმება მობილურსა და პლანშეტზე.
 
-RouteGo is designed to adapt to different screen sizes, including:
+---
 
-- Desktop computers
-- Tablets
-- Mobile devices
+## 👤 Author
 
-## Project Repository
-
-GitHub: https://github.com/Achi879/routego
+**Achi Xarshiladze**  
+GitHub: https://github.com/Achi879
 
 ---
 
