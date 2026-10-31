@@ -88,7 +88,11 @@ function DashboardApp() {
 
         <StatCard
           title="აქტიური მარშრუტები"
-          value={products.filter((product) => product.status === 'აქტიური').length}
+          value={
+            products.filter(
+              (product) => product.status === 'აქტიური',
+            ).length
+          }
           change="მიმდინარე სია"
           icon="🗺️"
         />
@@ -130,6 +134,7 @@ function DashboardApp() {
       </section>
 
       <RouteModal
+        key={`${isModalOpen}-${editingRoute?.id ?? 'new'}`}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSaveRoute}

@@ -2,41 +2,33 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
+// ფორმის საწყისი მონაცემების მომზადება
+function getInitialFormData(initialRoute) {
+  return initialRoute
+    ? {
+        name: initialRoute.name,
+        category: initialRoute.category,
+        price: initialRoute.price.replace(/[^\d.]/g, ''),
+        status: initialRoute.status,
+        icon: initialRoute.icon,
+      }
+    : {
+        name: '',
+        category: '',
+        price: '',
+        status: 'აქტიური',
+        icon: '🚌',
+      }
+}
+
 function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
-  const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    price: '',
-    status: 'აქტიური',
-    icon: '🚌',
-  })
+  const [formData, setFormData] = useState(() =>
+    getInitialFormData(initialRoute),
+  )
 
   const [errors, setErrors] = useState({})
 
-  useEffect(() => {
-    if (!isOpen) return
-
-    setFormData(
-      initialRoute
-        ? {
-            name: initialRoute.name,
-            category: initialRoute.category,
-            price: initialRoute.price.replace(/[^\d.]/g, ''),
-            status: initialRoute.status,
-            icon: initialRoute.icon,
-          }
-        : {
-            name: '',
-            category: '',
-            price: '',
-            status: 'აქტიური',
-            icon: '🚌',
-          },
-    )
-
-    setErrors({})
-  }, [isOpen, initialRoute])
-
+  // Escape ღილაკით მოდალის დახურვა
   useEffect(() => {
     if (!isOpen) return
 
@@ -73,11 +65,13 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
     const newErrors = {}
 
     if (formData.name.trim().length < 5) {
-      newErrors.name = 'მარშრუტის სახელი მინიმუმ 5 სიმბოლო უნდა იყოს.'
+      newErrors.name =
+        'მარშრუტის სახელი მინიმუმ 5 სიმბოლო უნდა იყოს.'
     }
 
     if (formData.category.trim().length < 3) {
-      newErrors.category = 'კატეგორია მინიმუმ 3 სიმბოლო უნდა იყოს.'
+      newErrors.category =
+        'კატეგორია მინიმუმ 3 სიმბოლო უნდა იყოს.'
     }
 
     const numericPrice = Number(formData.price)
@@ -87,7 +81,8 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
       !Number.isFinite(numericPrice) ||
       numericPrice <= 0
     ) {
-      newErrors.price = 'შეიყვანე სწორი ფასი, რომელიც ნულზე მეტია.'
+      newErrors.price =
+        'შეიყვანე სწორი ფასი, რომელიც ნულზე მეტია.'
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -125,8 +120,11 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
             <p className="dashboard-eyebrow">
               {initialRoute ? 'მარშრუტის მართვა' : 'ახალი ჩანაწერი'}
             </p>
+
             <h2 id="route-modal-title">
-              {initialRoute ? 'მარშრუტის რედაქტირება' : 'ახალი მარშრუტი'}
+              {initialRoute
+                ? 'მარშრუტის რედაქტირება'
+                : 'ახალი მარშრუტი'}
             </h2>
           </div>
 
@@ -140,19 +138,30 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
           </button>
         </div>
 
-        <form className="route-form" onSubmit={handleSubmit} noValidate>
+        <form
+          className="route-form"
+          onSubmit={handleSubmit}
+          noValidate
+        >
           <label>
             მარშრუტის სახელი
+
             <input
               name="name"
               value={formData.name}
               onChange={handleChange}
               placeholder="მაგ. თბილისი — ბათუმი"
               aria-invalid={Boolean(errors.name)}
-              aria-describedby={errors.name ? 'route-name-error' : undefined}
+              aria-describedby={
+                errors.name ? 'route-name-error' : undefined
+              }
             />
+
             {errors.name && (
-              <span id="route-name-error" className="route-form-error">
+              <span
+                id="route-name-error"
+                className="route-form-error"
+              >
                 {errors.name}
               </span>
             )}
@@ -160,6 +169,7 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
 
           <label>
             კატეგორია
+
             <input
               name="category"
               value={formData.category}
@@ -167,11 +177,17 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
               placeholder="მაგ. პოპულარული მარშრუტი"
               aria-invalid={Boolean(errors.category)}
               aria-describedby={
-                errors.category ? 'route-category-error' : undefined
+                errors.category
+                  ? 'route-category-error'
+                  : undefined
               }
             />
+
             {errors.category && (
-              <span id="route-category-error" className="route-form-error">
+              <span
+                id="route-category-error"
+                className="route-form-error"
+              >
                 {errors.category}
               </span>
             )}
@@ -179,6 +195,7 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
 
           <label>
             ბილეთის ფასი (₾)
+
             <input
               name="price"
               type="number"
@@ -188,10 +205,16 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
               onChange={handleChange}
               placeholder="მაგ. 40"
               aria-invalid={Boolean(errors.price)}
-              aria-describedby={errors.price ? 'route-price-error' : undefined}
+              aria-describedby={
+                errors.price ? 'route-price-error' : undefined
+              }
             />
+
             {errors.price && (
-              <span id="route-price-error" className="route-form-error">
+              <span
+                id="route-price-error"
+                className="route-form-error"
+              >
                 {errors.price}
               </span>
             )}
@@ -199,6 +222,7 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
 
           <label>
             სტატუსი
+
             <select
               name="status"
               value={formData.status}
@@ -211,6 +235,7 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
 
           <label>
             აირჩიე სიმბოლო
+
             <select
               name="icon"
               value={formData.icon}
@@ -234,8 +259,13 @@ function RouteModal({ isOpen, onClose, onSave, initialRoute }) {
               გაუქმება
             </button>
 
-            <button className="route-form-submit" type="submit">
-              {initialRoute ? 'ცვლილებების შენახვა' : 'მარშრუტის დამატება'}
+            <button
+              className="route-form-submit"
+              type="submit"
+            >
+              {initialRoute
+                ? 'ცვლილებების შენახვა'
+                : 'მარშრუტის დამატება'}
             </button>
           </div>
         </form>
