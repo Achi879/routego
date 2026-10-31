@@ -100,8 +100,8 @@ body {
   padding: 90px 7% 76px;
   text-align: center;
   background:
-    radial-gradient(ellipse at 50% 0%, #dbeafe 0%, transparent 60%),
-    linear-gradient(180deg, #eff6ff 0%, #f7f9fc 100%);
+radial-gradient(ellipse at 50% 0%, #dbeafe 0%, transparent 60%),
+linear-gradient(180deg, #eff6ff 0%, #f7f9fc 100%);
 }
 
 .eyebrow {
@@ -708,5 +708,212 @@ body {
 
   .menu-toggle {
     display: none;
+  }
+}
+
+/* Error Boundary Fallback UI */
+
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse at 50% 0%, #dbeafe 0%, transparent 60%),
+    #f7f9fc;
+}
+
+.error-boundary-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 40px 30px;
+  border: 1px solid #e5eaf2;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 16px 45px rgb(35 61 100 / 9%);
+  text-align: center;
+}
+
+.error-boundary-icon {
+  margin-bottom: 18px;
+  font-size: 48px;
+}
+
+.error-boundary-card h1 {
+  margin: 0;
+  color: #172033;
+  font-size: 26px;
+  line-height: 1.4;
+}
+
+.error-boundary-card p {
+  margin: 16px 0 25px;
+  color: #647087;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.error-boundary-card button {
+  min-height: 46px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  background: #2563eb;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 180ms ease;
+}
+
+.error-boundary-card button:hover {
+  background: #1d4ed8;
+}
+
+.error-boundary-card button:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 4px;
+}
+
+@media (max-width: 480px) {
+  .error-boundary-card {
+    padding: 32px 22px;
+  }
+
+  .error-boundary-card h1 {
+    font-size: 22px;
+  }
+}
+
+/* Route Modal */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(5px);
+  animation: modal-fade-in 0.2s ease;
+}
+
+.route-modal {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  padding: 32px;
+  border-radius: 20px;
+  background: #fff;
+  color: #1e293b;
+  text-align: left;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: modal-slide-in 0.25s ease;
+}
+
+.route-modal h2 {
+  margin: 0 0 20px;
+  font-size: 24px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 18px;
+}
+
+.modal-route-info {
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f1f5f9;
+}
+
+.modal-route-info h3 {
+  margin: 0 0 10px;
+}
+
+.modal-route-info p {
+  margin: 6px 0;
+}
+
+.route-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.route-modal form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-weight: 600;
+}
+
+.route-modal input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  outline: none;
+}
+
+.route-modal input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.route-modal form button,
+.modal-success button {
+  padding: 13px;
+  border: none;
+  border-radius: 9px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+.modal-success {
+  text-align: center;
+}
+
+.modal-success h2 {
+  margin-top: 12px;
+}
+
+.modal-success p {
+  margin-bottom: 20px;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .route-modal {
+    padding: 26px 20px;
   }
 }
